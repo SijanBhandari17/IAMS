@@ -1,0 +1,12 @@
+release/main.o
+release/mainwindow.o
+release/studentdashboard.o
+release/studentwindow1.o
+release/teacherdashboard.o
+release/teacherwindow1.o
+release/qrc_pictures.o
+release/moc_mainwindow.o
+release/moc_studentdashboard.o
+release/moc_studentwindow1.o
+release/moc_teacherdashboard.o
+release/moc_teacherwindow1.o

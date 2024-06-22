@@ -1,0 +1,12 @@
+debug/main.o
+debug/mainwindow.o
+debug/studentdashboard.o
+debug/studentwindow1.o
+debug/teacherdashboard.o
+debug/teacherwindow1.o
+debug/qrc_pictures.o
+debug/moc_mainwindow.o
+debug/moc_studentdashboard.o
+debug/moc_studentwindow1.o
+debug/moc_teacherdashboard.o
+debug/moc_teacherwindow1.o

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/PIctures">
+        <file>imag/IAMS.png</file>
+    </qresource>
+</RCC>
