@@ -1,5 +1,6 @@
 #include "teacherdashboard.h"
 #include "ui_teacherdashboard.h"
+#include "teacherwindow1.h"
 
 teacherdashboard::teacherdashboard(QWidget *parent)
     : QDialog(parent)
@@ -34,4 +35,13 @@ void teacherdashboard::showInternalPage() {
 
 
 
+
+
+void teacherdashboard::on_pushButton_6_clicked()
+{
+    SecDialog *teacherlogin = new SecDialog;
+    hide();
+    teacherlogin->show();
+
+}
 

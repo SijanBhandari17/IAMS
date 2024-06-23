@@ -12,15 +12,15 @@ SecDialog::SecDialog(QWidget *parent)
     ui->setupUi(this);
 
      mydb = QSqlDatabase::addDatabase("QSQLITE");
-    mydb.setDatabaseName("C:/Users/prabe/OneDrive/Desktop/IAMS/database/iamsdata.db");
+    mydb.setDatabaseName("C:/Users/Suresh/Desktop/prabesh/IAMS/database/iamsdata.db");
 
-    // Attempt to open the database
+
     if(!mydb.open()) {
-        // Set label text to indicate failure and print error message
+
         ui->label_4->setText("Unable to open database");
         qWarning() << "Database error: " << mydb.lastError().text();
     } else {
-        // Set label text to indicate success
+
         ui->label_4->setText("Connected...");
     }
 
