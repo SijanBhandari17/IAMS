@@ -20,6 +20,8 @@ private slots:
     void showAssignmentPage();
     void showInternalPage();
 
+    void on_pushButton_6_clicked();
+
 private:
     Ui::teacherdashboard *ui;
 };

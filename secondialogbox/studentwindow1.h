@@ -2,7 +2,9 @@
 #define STUDENTWINDOW1_H
 
 #include <QDialog>
-// change made by sijan
+#include <QtSql>
+#include "studentdashboard.h"
+
 namespace Ui {
 class studentwindow1;
 }
@@ -17,11 +19,12 @@ public:
 
 private slots:
     void okbutton();
-
     void backbutton();
 
 private:
     Ui::studentwindow1 *ui;
+    QSqlDatabase mydb;
+    studentdashboard *StudentDashBoard;
 };
 
 #endif // STUDENTWINDOW1_H

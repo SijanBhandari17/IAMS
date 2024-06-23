@@ -24,6 +24,13 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>[+]status</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QLabel" name="label">
       <property name="styleSheet">
        <string notr="true">QLabel{
@@ -112,7 +119,7 @@ font-size:15px;
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="okbutton">
+       <widget class="QPushButton" name="ok">
         <property name="text">
          <string>Ok</string>
         </property>
