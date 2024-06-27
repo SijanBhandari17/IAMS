@@ -23,14 +23,17 @@ teacherdashboard::~teacherdashboard()
 void teacherdashboard::showHomePage() {
     ui->stackedWidget->setCurrentWidget(ui->Home);
 
+
 }
 
 void teacherdashboard::showAssignmentPage() {
     ui->stackedWidget->setCurrentWidget(ui->Assignment);
+
 }
 
 void teacherdashboard::showInternalPage() {
     ui->stackedWidget->setCurrentWidget(ui->Internal);
+
 }
 
 
@@ -43,5 +46,11 @@ void teacherdashboard::on_pushButton_6_clicked()
     hide();
     teacherlogin->show();
 
+}
+
+
+void teacherdashboard::on_Update_clicked()
+{
+    // ui->
 }
 

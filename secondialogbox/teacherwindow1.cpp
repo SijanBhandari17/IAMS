@@ -12,7 +12,7 @@ SecDialog::SecDialog(QWidget *parent)
     ui->setupUi(this);
 
      mydb = QSqlDatabase::addDatabase("QSQLITE");
-    mydb.setDatabaseName("C:/Users/Suresh/Desktop/prabesh/IAMS/database/iamsdata.db");
+    mydb.setDatabaseName("C:/Users/A S U S/Desktop/IAMS/database/iamsdata.db");
 
 
     if(!mydb.open()) {
