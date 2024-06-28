@@ -1,9 +1,10 @@
 #include "teacherwindow1.h"
 #include "ui_teacherwindow1.h"
-#include"mainwindow.h"
-#include<QLabel>
-#include<QMessageBox>
-#include<QSqlQuery>
+#include "mainwindow.h"
+#include "teacherdashboard.h" // Include teacherdashboard header
+#include <QLabel>
+#include <QMessageBox>
+#include <QSqlQuery>
 
 SecDialog::SecDialog(QWidget *parent)
     : QDialog(parent)
@@ -11,26 +12,18 @@ SecDialog::SecDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
-     mydb = QSqlDatabase::addDatabase("QSQLITE");
-    mydb.setDatabaseName("C:/Users/A S U S/Desktop/IAMS/database/iamsdata.db");
-
-
-    if(!mydb.open()) {
-
+    if(!connectionOpen()) {
         ui->label_4->setText("Unable to open database");
         qWarning() << "Database error: " << mydb.lastError().text();
     } else {
-
         ui->label_4->setText("Connected...");
     }
 
-    this->resize(800,600);
+    this->resize(800, 600);
     setWindowTitle("TeacherLogin");
 
-    connect(ui->ok,SIGNAL(clicked()),this,SLOT(okbutton()));
-    connect(ui->backbutton,SIGNAL(clicked()),this,SLOT(backbutton()));
-
-
+    connect(ui->ok, SIGNAL(clicked()), this, SLOT(okbutton()));
+    connect(ui->backbutton, SIGNAL(clicked()), this, SLOT(backbutton()));
 }
 
 SecDialog::~SecDialog()
@@ -38,19 +31,18 @@ SecDialog::~SecDialog()
     delete ui;
 }
 
-
 void SecDialog::okbutton()
 {
     QString username = ui->userEdit->text();
     QString password = ui->passwordEdit->text();
 
-    if(!mydb.isOpen()){
+    if(!connectionOpen()){
         qDebug() << "Failed to open database";
         return;
     }
 
     QSqlQuery qry;
-    qry.prepare("SELECT * FROM Teacher WHERE username = :username AND password = :password");
+    qry.prepare("SELECT * FROM Teacher WHERE userName = :username AND passWord = :password");
     qry.bindValue(":username", username);
     qry.bindValue(":password", password);
 
@@ -64,6 +56,7 @@ void SecDialog::okbutton()
 
         if(count == 1){
             ui->label_4->setText("Login successful");
+            connectionClose();
             hide();
             TeacherDashBoard = new teacherdashboard(this);
             TeacherDashBoard->show();
@@ -73,22 +66,20 @@ void SecDialog::okbutton()
         }
         else{
             ui->label_4->setText("Incorrect username or password");
+            ui->passwordEdit->setText("");
         }
     }
     else
     {
         qDebug() << "Query execution error: " << qry.lastError().text();
     }
+
+    connectionClose();
 }
-
-
 
 void SecDialog::backbutton()
 {
-
     MainWindow *mainw = new MainWindow(this);
     hide();
     mainw->show();
-
 }
-

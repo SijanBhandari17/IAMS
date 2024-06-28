@@ -5,6 +5,7 @@
 #include<QPushButton>
 #include<QFont>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent) , ui(new Ui::MainWindow)
 {
@@ -70,6 +71,7 @@ void MainWindow::on_student_button_clicked()
 }
 void MainWindow::on_teacher_button_clicked()
 {
+    qDebug()<<"Teacher Dialog is opened";
 
     teacherWindow1 = new SecDialog(this);
     hide();

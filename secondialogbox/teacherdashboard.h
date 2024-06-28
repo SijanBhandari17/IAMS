@@ -2,6 +2,7 @@
 #define TEACHERDASHBOARD_H
 
 #include <QDialog>
+#include <QSqlDatabase>
 
 namespace Ui {
 class teacherdashboard;
@@ -19,13 +20,14 @@ private slots:
     void showHomePage();
     void showAssignmentPage();
     void showInternalPage();
-
-    void on_pushButton_6_clicked();
-
-    void on_Update_clicked();
+    void logOut();
+    void on_internalupdate_clicked();
 
 private:
     Ui::teacherdashboard *ui;
+    QSqlDatabase mydb;
+    bool connectionOpen();
+    void connectionClose();
 };
 
 #endif // TEACHERDASHBOARD_H

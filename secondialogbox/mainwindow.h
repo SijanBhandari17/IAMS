@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include"teacherwindow1.h"
-#include <QMainWindow>
 #include"studentwindow1.h"
+#include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,7 +19,7 @@ public:
     ~MainWindow();
 
 private slots:
-     void on_teacher_button_clicked();
+    void on_teacher_button_clicked();
     void on_student_button_clicked();
 
 
