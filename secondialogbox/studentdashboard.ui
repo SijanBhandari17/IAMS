@@ -92,17 +92,17 @@
   <widget class="QStackedWidget" name="stackedWidget">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>190</x>
      <y>30</y>
-     <width>741</width>
-     <height>461</height>
+     <width>431</width>
+     <height>391</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(0, 0, 0);</string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="Home">
     <widget class="QLabel" name="label_3">
@@ -123,8 +123,8 @@
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>180</y>
+       <x>50</x>
+       <y>80</y>
        <width>191</width>
        <height>91</height>
       </rect>
@@ -135,17 +135,14 @@
     </widget>
    </widget>
    <widget class="QWidget" name="Internal">
-    <widget class="QLabel" name="label_2">
+    <widget class="QTableView" name="tableView">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>160</y>
-       <width>191</width>
-       <height>91</height>
+       <x>10</x>
+       <y>60</y>
+       <width>531</width>
+       <height>361</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>Internal</string>
      </property>
     </widget>
    </widget>

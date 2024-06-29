@@ -17,12 +17,17 @@ public:
     ~teacherdashboard();
 
 private slots:
+
     void showHomePage();
     void showAssignmentPage();
     void showInternalPage();
-    void on_internalupdate_clicked();
+    void logOut();
 
-    void on_pushButton_6_clicked();
+    void on_internalAdd_clicked();
+
+    void on_internalUpdate_clicked();
+
+    void on_internalDelete_clicked();
 
 private:
     Ui::teacherdashboard *ui;
