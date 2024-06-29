@@ -52,7 +52,7 @@ private slots:
 
 private:
     Ui::SecDialog *ui;
-    teacherdashboard *TeacherDashBoard; // Pointer to teacherdashboard class
+    teacherdashboard *TeacherDashBoard;
     QSqlDatabase mydb;
 };
 

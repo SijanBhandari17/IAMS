@@ -1,10 +1,9 @@
 #include "teacherdashboard.h"
 #include "ui_teacherdashboard.h"
-#include "teacherwindow1.h"
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QDebug>
-
+#include"teacherwindow1.h"
 teacherdashboard::teacherdashboard(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::teacherdashboard)
@@ -66,29 +65,27 @@ void teacherdashboard::showInternalPage() {
     ui->stackedWidget->setCurrentWidget(ui->Internal);
 }
 
-void teacherdashboard::logOut()
-{
-    SecDialog *teacherlogin = new SecDialog;
-    hide();
-    teacherlogin->show();
-}
-
 void teacherdashboard::on_internalupdate_clicked()
 {
     QString block = ui->blockEdit->text();
     QString room = ui->roomEdit->text();
     QString code = ui->courseEdit->text();
-
+    QTime selectedTime = ui->timeEdit->time();
+    QString timeString = selectedTime.toString("HH:mm:ss");
+    QDate selectedDate = ui->dateEdit->date();
+    QString dateString = selectedDate.toString("dd-MM-yyyy");
     if (!connectionOpen()) {
         qDebug() << "Failed to open database";
         return;
     }
 
     QSqlQuery qry;
-    qry.prepare("INSERT INTO Exam (Course_Code, Block, RoomNo) VALUES (:code, :block, :room)");
+    qry.prepare("INSERT INTO Exam (Course_Code, Block, RoomNo, Time, Date) VALUES (:code, :block, :room, :time, :date)");
     qry.bindValue(":code", code);
     qry.bindValue(":block", block);
     qry.bindValue(":room", room);
+    qry.bindValue(":time", timeString);
+    qry.bindValue(":date", dateString);
 
     if (qry.exec()) {
         QMessageBox::information(this, "Saved", "Data has been saved successfully.");
@@ -100,3 +97,9 @@ void teacherdashboard::on_internalupdate_clicked()
     connectionClose();
 }
 
+void teacherdashboard::on_pushButton_6_clicked()
+{
+    SecDialog *teacherlogin = new SecDialog;
+    hide();
+    teacherlogin->show();
+}
