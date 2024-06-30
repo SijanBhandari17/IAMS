@@ -138,12 +138,7 @@ void teacherdashboard::on_internalAdd_clicked()
     connectionClose();
 }
 
-void teacherdashboard::logOut()
-{
-    SecDialog *teacherlogin = new SecDialog;
-    hide();
-    teacherlogin->show();
-}
+
 
 void teacherdashboard::on_internalDelete_clicked()
 {
@@ -172,5 +167,15 @@ void teacherdashboard::on_internalDelete_clicked()
 
     connectionClose();
 
+}
+
+
+
+
+void teacherdashboard::on_logOut_clicked()
+{
+    SecDialog *teacherlogin = new SecDialog;
+    hide();
+    teacherlogin->show();
 }
 

@@ -19,15 +19,18 @@ public:
 private slots:
 
     void showHomePage();
+
     void showAssignmentPage();
+
     void showInternalPage();
-    void logOut();
 
     void on_internalAdd_clicked();
 
     void on_internalUpdate_clicked();
 
     void on_internalDelete_clicked();
+
+    void on_logOut_clicked();
 
 private:
     Ui::teacherdashboard *ui;
