@@ -37,6 +37,11 @@ private:
     QSqlDatabase mydb;
     bool connectionOpen();
     void connectionClose();
+
+    bool getAllDates(QString &dateString);
+
+    QStringList checkExamDate(QStringList &dateList);
+
 };
 
 #endif // TEACHERDASHBOARD_H

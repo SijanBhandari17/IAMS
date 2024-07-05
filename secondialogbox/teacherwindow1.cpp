@@ -1,7 +1,7 @@
 #include "teacherwindow1.h"
 #include "ui_teacherwindow1.h"
 #include "mainwindow.h"
-#include "teacherdashboard.h" // Include teacherdashboard header
+#include "teacherdashboard.h"
 #include <QLabel>
 #include <QMessageBox>
 #include <QSqlQuery>
@@ -71,7 +71,7 @@ void SecDialog::okbutton()
     }
     else
     {
-        qDebug() << "Query execution error: " << qry.lastError().text();
+        qDebug() << "Query  error: " << qry.lastError().text();
     }
 
     connectionClose();
