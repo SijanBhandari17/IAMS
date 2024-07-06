@@ -114,6 +114,7 @@ void teacherdashboard::on_internalAdd_clicked()
     QDate selectedDate = ui->dateEdit->date();
     QString dateString = selectedDate.toString("MM/dd/yyyy");
 
+
     if (!connectionOpen()) {
         qDebug() << "Failed to open database";
         return;
