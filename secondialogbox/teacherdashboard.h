@@ -13,7 +13,7 @@ class teacherdashboard : public QDialog
     Q_OBJECT
 
 public:
-    explicit teacherdashboard(QWidget *parent = nullptr);
+    explicit teacherdashboard(QWidget *parent = nullptr, const QString &username = " ");
     ~teacherdashboard();
 
 private slots:
@@ -41,6 +41,10 @@ private:
     bool getAllDates(QString &dateString);
 
     QStringList checkExamDate(QStringList &dateList);
+
+    QString t_username;
+
+    bool matchcode(QString &username,QString &code);
 
 };
 

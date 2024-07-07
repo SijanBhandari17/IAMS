@@ -4,10 +4,11 @@
 #include <QMessageBox>
 #include <QDebug>
 #include "teacherwindow1.h"
+#include"QString"
+teacherdashboard::teacherdashboard(QWidget *parent, const QString &username)
 
-teacherdashboard::teacherdashboard(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::teacherdashboard)
+    , ui(new Ui::teacherdashboard), t_username(username)
 {
     ui->setupUi(this);
     this->resize(800, 600);
@@ -56,6 +57,7 @@ void teacherdashboard::connectionClose()
 
 void teacherdashboard::showHomePage() {
     ui->stackedWidget->setCurrentWidget(ui->Home);
+
 }
 
 void teacherdashboard::showAssignmentPage() {
@@ -63,7 +65,10 @@ void teacherdashboard::showAssignmentPage() {
 }
 
 void teacherdashboard::showInternalPage() {
+    ui->userLable->setText(t_username);
     ui->stackedWidget->setCurrentWidget(ui->Internal);
+
+
 }
 
 void teacherdashboard::on_internalUpdate_clicked()
@@ -76,6 +81,8 @@ void teacherdashboard::on_internalUpdate_clicked()
     QDate selectedDate = ui->dateEdit->date();
     QString dateString = selectedDate.toString("MM/dd/yyyy");
 
+
+
     if (code.isEmpty()) {
         QMessageBox::information(this, "Error", "Course Code is required to update the record.");
         return;
@@ -86,24 +93,41 @@ void teacherdashboard::on_internalUpdate_clicked()
         return;
     }
 
-    QSqlQuery qry;
-    qry.prepare("UPDATE Exam SET Block = :block, RoomNo = :room, Time = :time, Date = :date WHERE Course_Code = :code");
-    qry.bindValue(":block", block);
-    qry.bindValue(":room", room);
-    qry.bindValue(":time", timeString);
-    qry.bindValue(":date", dateString);
-    qry.bindValue(":code", code);
+    if (matchcode(t_username,code))
+    {
+        if(getAllDates(dateString))
+            {
+            connectionOpen();
+            QSqlQuery qry;
+            qry.prepare("UPDATE Exam SET Block = :block, RoomNo = :room, Time = :time, Date = :date WHERE Course_Code = :code");
+            qry.bindValue(":block", block);
+            qry.bindValue(":room", room);
+            qry.bindValue(":time", timeString);
+            qry.bindValue(":date", dateString);
+            qry.bindValue(":code", code);
 
-    if (qry.exec()) {
-        QMessageBox::information(this, "Updated", "Data has been updated successfully.");
-    } else {
-        QMessageBox::information(this, "Error", "Failed to update data.");
-        qDebug() << "Query execution error: " << qry.lastError().text();
+
+            if (!qry.exec()) {
+                QMessageBox::information(this, "Error", "Failed to save data.");
+                qDebug() << "Query error: " << qry.lastError().text();
+
+            } else {
+                QMessageBox::information(this, "Saved", "Data has been saved successfully.");
+            }
+        }
+
+        else {
+            QMessageBox::critical(this, "Cannot", "The date is already taken");
+        }
+        connectionClose();
+
     }
+    else{
+        QMessageBox::critical(this,"Cannot","You are not authorized to access this course ");
 
-    connectionClose();
+
+    }
 }
-
 void teacherdashboard::on_internalAdd_clicked()
 {
     QString block = ui->blockEdit->text();
@@ -126,6 +150,9 @@ void teacherdashboard::on_internalAdd_clicked()
         return;
     }
 
+    if (matchcode(t_username,code))
+    {
+
       if (getAllDates(dateString)) {
         connectionOpen();
         QSqlQuery qry;
@@ -145,12 +172,44 @@ void teacherdashboard::on_internalAdd_clicked()
         }
     } else {
          QMessageBox::critical(this, "Cannot", "The date is already taken");
+         connectionClose();
      }
-
-    connectionClose();
+    }
+     else{
+         QMessageBox::critical(this,"Cannot","You are not authorized to access this course ");
+        }
 }
 
 
+bool teacherdashboard::matchcode(QString &username,QString &code)
+{
+    if (!connectionOpen()) {
+        qDebug() << "Failed to open database";
+        return false;
+    }
+
+    QSqlQuery qry;
+    qry.prepare("SELECT * FROM Teacher WHERE userName = :username AND courseCode = :code");
+    qry.bindValue(":username", username);
+    qry.bindValue(":code", code);
+
+    bool result = false;
+    if(qry.exec()){
+        int count = 0;
+        while(qry.next()){
+            count++;
+        }
+
+        if(count == 1 ){
+            result = true;
+
+        }
+    }
+    connectionClose();
+
+    return result;
+
+}
 void teacherdashboard::on_internalDelete_clicked()
 {
     QString code = ui->courseEdit->text();

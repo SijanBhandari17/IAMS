@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QSqlQuery>
-
+#include "teacherdashboard.h"
 SecDialog::SecDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::SecDialog)
@@ -48,6 +48,7 @@ void SecDialog::okbutton()
 
     if(qry.exec())
     {
+
         int count = 0;
         while(qry.next())
         {
@@ -58,8 +59,10 @@ void SecDialog::okbutton()
             ui->label_4->setText("Login successful");
             connectionClose();
             hide();
-            TeacherDashBoard = new teacherdashboard(this);
+
+            TeacherDashBoard = new teacherdashboard(this,username);
             TeacherDashBoard->show();
+
         }
         else if(count > 1){
             ui->label_4->setText("Duplicate username or password");
