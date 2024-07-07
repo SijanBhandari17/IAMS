@@ -28,49 +28,18 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>5</y>
-      <width>40</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>40</width>
-      <height>40</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>40</width>
-      <height>40</height>
-     </size>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>:/new/prefix1/images/vecteezy_profile-icon-design-vector_5544718.jpg</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>30</y>
+      <x>140</x>
+      <y>60</y>
       <width>581</width>
       <height>421</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-background-color: rgb(0, 0, 0);</string>
+     <string notr="true">background-color: rgb(221, 160, 221);
+color: black</string>
     </property>
     <property name="currentIndex">
      <number>2</number>
@@ -198,8 +167,8 @@ background-color: rgb(0, 0, 0);</string>
        <rect>
         <x>20</x>
         <y>30</y>
-        <width>301</width>
-        <height>321</height>
+        <width>431</width>
+        <height>381</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -214,6 +183,9 @@ background-color: rgb(0, 0, 0);</string>
          </item>
          <item>
           <widget class="QLabel" name="userLable">
+           <property name="styleSheet">
+            <string notr="true">border-color: rgb(0, 0, 0);</string>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -397,25 +369,6 @@ background-color: rgb(0, 0, 0);</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>20</y>
-      <width>40</width>
-      <height>38</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>:/images/images/vecteezy_profile-icon-design-vector_5544718.jpg</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
@@ -438,7 +391,8 @@ background-color: rgb(0, 0, 0);</string>
         <bool>false</bool>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 0, 0);</string>
+        <string notr="true">background-color: rgb(114, 14, 158);
+color: white</string>
        </property>
        <property name="text">
         <string>HOME</string>
@@ -454,7 +408,8 @@ background-color: rgb(0, 0, 0);</string>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 0, 0);</string>
+        <string notr="true">background-color: rgb(114, 14, 158);
+color: white</string>
        </property>
        <property name="text">
         <string>ASSIGNMENT</string>
@@ -470,7 +425,8 @@ background-color: rgb(0, 0, 0);</string>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 0, 0);</string>
+        <string notr="true">background-color: rgb(114, 14, 158);
+color: white</string>
        </property>
        <property name="text">
         <string>INTERNAL</string>
@@ -486,7 +442,8 @@ background-color: rgb(0, 0, 0);</string>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(0, 0, 0);</string>
+        <string notr="true">background-color: rgb(114, 14, 158);
+color: white</string>
        </property>
        <property name="text">
         <string>LOG OUT</string>

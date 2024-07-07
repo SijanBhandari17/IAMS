@@ -23,6 +23,8 @@ teacherdashboard::teacherdashboard(QWidget *parent, const QString &username)
     } else {
         ui->status->setText("Connected...");
     }
+
+     ui->stackedWidget->setCurrentWidget(ui->Home);
 }
 
 teacherdashboard::~teacherdashboard()
