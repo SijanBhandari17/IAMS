@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("IAMS");
     this->resize(800,600);
 
+
     QLabel *iams_logo = new QLabel(this);
     QPixmap picture(":/images/images/Black Illustrative Education Logo.png");
     iams_logo->setGeometry(300,0,200,200);
@@ -49,10 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
     student_button->setGeometry(QRect(QPoint(400,400),QSize(100,100)));
     student_button->setFont(font4);
 
-    connect(teacher_button,SIGNAL(clicked()),this,SLOT(on_teacher_button_clicked()));
-    connect(student_button,SIGNAL(clicked()),this,SLOT(on_student_button_clicked()));
-
-
+    connect(teacher_button, &QPushButton::clicked, this, &MainWindow::teacherButton);
+    connect(student_button, &QPushButton::clicked, this, &MainWindow::studentButton);
 
 
 }
@@ -62,14 +61,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_student_button_clicked()
+void MainWindow::studentButton()
 {
 
     studentWindow1 = new studentwindow1(this);
     hide();
     studentWindow1->show();
 }
-void MainWindow::on_teacher_button_clicked()
+void MainWindow::teacherButton()
 {
     qDebug()<<"Teacher Dialog is opened";
 

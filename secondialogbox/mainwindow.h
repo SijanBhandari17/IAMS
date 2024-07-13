@@ -19,8 +19,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_teacher_button_clicked();
-    void on_student_button_clicked();
+    void studentButton();
+    void teacherButton();
 
 
 private:

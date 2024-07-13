@@ -48,7 +48,16 @@ public:
 
 private slots:
     void okbutton();
+
     void backbutton();
+
+    void on_passwordButton_clicked();
+
+    void changePassword();
+
+    bool containsNumber(QString &str);
+
+    void on_backButton_clicked();
 
 private:
     Ui::SecDialog *ui;

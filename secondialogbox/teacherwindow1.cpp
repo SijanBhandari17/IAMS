@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include "teacherdashboard.h"
+#include<QString>
+
 SecDialog::SecDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::SecDialog)
@@ -13,10 +15,10 @@ SecDialog::SecDialog(QWidget *parent)
     ui->setupUi(this);
 
     if(!connectionOpen()) {
-        ui->label_4->setText("Unable to open database");
+        ui->status->setText("Unable to open database");
         qWarning() << "Database error: " << mydb.lastError().text();
     } else {
-        ui->label_4->setText("Connected...");
+        ui->status->setText("Connected...");
     }
 
     this->resize(800, 600);
@@ -24,6 +26,14 @@ SecDialog::SecDialog(QWidget *parent)
 
     connect(ui->ok, SIGNAL(clicked()), this, SLOT(okbutton()));
     connect(ui->backbutton, SIGNAL(clicked()), this, SLOT(backbutton()));
+    connect(ui->changePassword, SIGNAL(clicked()), this, SLOT(changePassword()));
+
+    ui->stackedWidget->setCurrentWidget(ui->mainPage);
+    ui->userEdit2->setPlaceholderText("Enter Username");
+    ui->passwordEdit3->setPlaceholderText("Enter new Password");
+    ui->passwordEdit2->setPlaceholderText("Confirm Password");
+
+
 }
 
 SecDialog::~SecDialog()
@@ -56,7 +66,7 @@ void SecDialog::okbutton()
         }
 
         if(count == 1){
-            ui->label_4->setText("Login successful");
+            ui->status->setText("Login successful");
             connectionClose();
             hide();
 
@@ -65,10 +75,10 @@ void SecDialog::okbutton()
 
         }
         else if(count > 1){
-            ui->label_4->setText("Duplicate username or password");
+            ui->status->setText("Duplicate username or password");
         }
         else{
-            ui->label_4->setText("Incorrect username or password");
+            ui->status->setText("Incorrect username or password");
             ui->passwordEdit->setText("");
         }
     }
@@ -86,3 +96,73 @@ void SecDialog::backbutton()
     hide();
     mainw->show();
 }
+
+void SecDialog::on_passwordButton_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->passwordPage);
+}
+
+bool SecDialog::containsNumber(QString &str){
+
+    for (QChar c : str) {
+        if (c.isDigit()) {
+            return true;
+        }
+
+    }
+     return false;
+}
+void SecDialog::changePassword()
+{
+    QString username = ui->userEdit2->text();
+    QString password = ui->passwordEdit2->text();
+    QString cpassword = ui->passwordEdit3->text();
+
+    if(username.isEmpty())
+    {
+        QMessageBox::critical(this,"Error", "Username cannot be empty");
+        return;
+    }
+
+    if(password != cpassword)
+    {
+        QMessageBox::critical(this,"Error", "Entered password and confirmation password doesnot match");
+        return;
+
+    }
+
+    if(containsNumber(password))
+    {
+        if (!connectionOpen()) {
+            qDebug() << "Failed to open database";
+            return;
+        }
+
+        QSqlQuery qry;
+        qry.prepare("UPDATE Teacher SET passWord = :password where userName = :username");
+        qry.bindValue(":password", password);
+        qry.bindValue(":username" ,username);
+
+        if (!qry.exec()) {
+            QMessageBox::information(this, "Error", "Failed to change password");
+            qDebug() << "Query error: " << qry.lastError().text();
+
+        } else {
+            QMessageBox::information(this, "Saved", " Password changed successfully ");
+
+        }
+
+    }
+    else{
+        QMessageBox::information(this,"Error","Password should contain a number");
+        }
+
+}
+
+
+void SecDialog::on_backButton_clicked()
+{
+    ui->stackedWidget->setCurrentWidget(ui->mainPage);
+
+}
+
