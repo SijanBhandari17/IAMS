@@ -21,7 +21,7 @@
     <rect>
      <x>60</x>
      <y>80</y>
-     <width>101</width>
+     <width>102</width>
      <height>311</height>
     </rect>
    </property>
@@ -110,7 +110,7 @@ color: white</string>
 color: black</string>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="Home">
     <widget class="QLabel" name="label_3">
@@ -128,22 +128,19 @@ color: black</string>
     </widget>
    </widget>
    <widget class="QWidget" name="Assignment">
-    <widget class="QLabel" name="label_4">
+    <widget class="QTableView" name="AssinmentTableView">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>80</y>
-       <width>191</width>
-       <height>91</height>
+       <x>10</x>
+       <y>50</y>
+       <width>531</width>
+       <height>361</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>Assignment</string>
      </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Internal">
-    <widget class="QTableView" name="tableView">
+    <widget class="QTableView" name="internalTableView">
      <property name="geometry">
       <rect>
        <x>10</x>

@@ -10,7 +10,7 @@ studentwindow1::studentwindow1(QWidget *parent)
 {
     ui->setupUi(this);
 
-    if(!connectionOpen()) {
+    if (!connectionOpen()) {
         ui->status->setText("Unable to open database");
         qWarning() << "Database error: " << mydb.lastError().text();
     } else {
@@ -22,10 +22,14 @@ studentwindow1::studentwindow1(QWidget *parent)
 
     connect(ui->ok, &QPushButton::clicked, this, &studentwindow1::okbutton);
     connect(ui->backbutton, &QPushButton::clicked, this, &studentwindow1::backbutton);
+    connect(ui->changeButton, &QPushButton::clicked, this, &studentwindow1::changePassword);
+
+
     ui->stackedWidget->setCurrentWidget(ui->mainPage);
     ui->userEdit2->setPlaceholderText("Enter Username");
-    ui->passwordEdit3->setPlaceholderText("Enter new Password");
-    ui->passwordEdit2->setPlaceholderText("Confirm Password");
+    ui->passwordEdit3->setPlaceholderText("Enter old Password");
+    ui->passwordEdit2->setPlaceholderText("Enter new Password");
+
 }
 
 studentwindow1::~studentwindow1()
@@ -72,10 +76,11 @@ void studentwindow1::okbutton()
     } else {
         qDebug() << "Query execution error: " << qry.lastError().text();
     }
+
+    connectionClose();
 }
 
 void studentwindow1::backbutton()
-
 {
     MainWindow *mainw = new MainWindow(this);
     hide();
@@ -85,20 +90,15 @@ void studentwindow1::backbutton()
 void studentwindow1::on_changepasswordButton_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->passwordPage);
-
 }
 
-bool studentwindow1::containsNumber(QString &str)
+bool studentwindow1::containsNumber(const QString &str)
 {
     for (QChar c : str) {
         if (c.isDigit()) {
-
-
             return true;
         }
-
     }
-
     return false;
 }
 
@@ -107,45 +107,57 @@ void studentwindow1::on_backButton_clicked()
     ui->stackedWidget->setCurrentWidget(ui->mainPage);
 }
 
-void studentwindow1::on_changeButton_clicked()
+
+void studentwindow1::changePassword()
 {
+
     QString username = ui->userEdit2->text();
     QString password = ui->passwordEdit2->text();
-    QString cpassword = ui->passwordEdit3->text();
+    QString oldpassword = ui->passwordEdit3->text();
 
-    if(username.isEmpty())
-    {
+    if (username.isEmpty()) {
         QMessageBox::critical(this, "Error", "Username cannot be empty");
         return;
     }
 
-    if(password != cpassword)
-    {
-        QMessageBox::critical(this, "Error", "Entered password and confirmation password do not match");
+    if (!connectionOpen()) {
+        qDebug() << "Failed to open database";
         return;
     }
 
-    if(containsNumber(password))
-    {
-        if (!connectionOpen()) {
-            qDebug() << "Failed to open database";
-            return;
+    QSqlQuery qry;
+    qry.prepare("SELECT * FROM Student WHERE userName = :username AND password = :oldpassword");
+    qry.bindValue(":username", username);
+    qry.bindValue(":oldpassword", oldpassword);
+
+    if (qry.exec()) {
+        int count = 0;
+        while (qry.next()) {
+            count++;
         }
 
-        QSqlQuery qry;
-        qry.prepare("UPDATE Student SET passWord = :password WHERE userName = :username");
-        qry.bindValue(":password", password);
-        qry.bindValue(":username", username);
+        if (count == 1) {
+            qry.prepare("UPDATE Student SET password = :password WHERE userName = :username");
+            qry.bindValue(":password", password);
+            qry.bindValue(":username", username);
 
-        if (!qry.exec()) {
-            QMessageBox::information(this, "Error", "Failed to change password");
-            qDebug() << "Query error: " << qry.lastError().text();
+            if (!containsNumber(password)) {
+                QMessageBox::critical(this, "Error", "Password should contain a number");
+                return;
+            }
+            if (!qry.exec()) {
+                QMessageBox::information(this, "Error", "Failed to change password");
+                qDebug() << "Query error: " << qry.lastError().text();
+            } else {
+                QMessageBox::information(this, "Saved", "Password changed successfully");
+            }
         } else {
-            QMessageBox::information(this, "Saved", "Password changed successfully");
+            QMessageBox::information(this, "Error", "Incorrect old password");
         }
+    } else {
+        qDebug() << "Query error: " << qry.lastError().text();
     }
-    else {
-        QMessageBox::information(this, "Error", "Password should contain a number");
-    }
+
+    connectionClose();
 }
 

@@ -5,8 +5,8 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QSqlQuery>
-#include "teacherdashboard.h"
-#include<QString>
+#include <QSqlError>
+#include <QString>
 
 SecDialog::SecDialog(QWidget *parent)
     : QDialog(parent)
@@ -24,16 +24,14 @@ SecDialog::SecDialog(QWidget *parent)
     this->resize(800, 600);
     setWindowTitle("TeacherLogin");
 
-    connect(ui->ok, SIGNAL(clicked()), this, SLOT(okbutton()));
-    connect(ui->backbutton, SIGNAL(clicked()), this, SLOT(backbutton()));
-    connect(ui->changePassword, SIGNAL(clicked()), this, SLOT(changePassword()));
+    connect(ui->ok, &QPushButton::clicked, this, &SecDialog::okbutton);
+    connect(ui->backbutton, &QPushButton::clicked, this, &SecDialog::backbutton);
+    connect(ui->changePassword, &QPushButton::clicked, this, &SecDialog::changePassword);
 
     ui->stackedWidget->setCurrentWidget(ui->mainPage);
     ui->userEdit2->setPlaceholderText("Enter Username");
-    ui->passwordEdit3->setPlaceholderText("Enter new Password");
-    ui->passwordEdit2->setPlaceholderText("Confirm Password");
-
-
+    ui->passwordEdit3->setPlaceholderText("Enter old Password");
+    ui->passwordEdit2->setPlaceholderText("New Password");
 }
 
 SecDialog::~SecDialog()
@@ -58,7 +56,6 @@ void SecDialog::okbutton()
 
     if(qry.exec())
     {
-
         int count = 0;
         while(qry.next())
         {
@@ -70,9 +67,8 @@ void SecDialog::okbutton()
             connectionClose();
             hide();
 
-            TeacherDashBoard = new teacherdashboard(this,username);
+            TeacherDashBoard = new teacherdashboard(this, username);
             TeacherDashBoard->show();
-
         }
         else if(count > 1){
             ui->status->setText("Duplicate username or password");
@@ -84,7 +80,7 @@ void SecDialog::okbutton()
     }
     else
     {
-        qDebug() << "Query  error: " << qry.lastError().text();
+        qDebug() << "Query error: " << qry.lastError().text();
     }
 
     connectionClose();
@@ -102,21 +98,21 @@ void SecDialog::on_passwordButton_clicked()
     ui->stackedWidget->setCurrentWidget(ui->passwordPage);
 }
 
-bool SecDialog::containsNumber(QString &str){
-
+bool SecDialog::containsNumber(const QString &str)
+{
     for (QChar c : str) {
         if (c.isDigit()) {
             return true;
         }
-
     }
-     return false;
+    return false;
 }
+
 void SecDialog::changePassword()
 {
     QString username = ui->userEdit2->text();
     QString password = ui->passwordEdit2->text();
-    QString cpassword = ui->passwordEdit3->text();
+    QString oldpassword = ui->passwordEdit3->text();
 
     if(username.isEmpty())
     {
@@ -124,45 +120,54 @@ void SecDialog::changePassword()
         return;
     }
 
-    if(password != cpassword)
-    {
-        QMessageBox::critical(this,"Error", "Entered password and confirmation password doesnot match");
+    if (!containsNumber(password)) {
+        QMessageBox::critical(this, "Error", "Password should contain a number");
         return;
-
     }
 
-    if(containsNumber(password))
+    if(!connectionOpen()){
+        qDebug() << "Failed to open database";
+        return;
+    }
+
+    QSqlQuery qry;
+    qry.prepare("SELECT * FROM Teacher WHERE userName = :username AND passWord = :oldpassword");
+    qry.bindValue(":username", username);
+    qry.bindValue(":oldpassword", oldpassword);
+
+    if(qry.exec())
     {
-        if (!connectionOpen()) {
-            qDebug() << "Failed to open database";
-            return;
+        int count = 0;
+        while(qry.next())
+        {
+            count++;
         }
 
-        QSqlQuery qry;
-        qry.prepare("UPDATE Teacher SET passWord = :password where userName = :username");
-        qry.bindValue(":password", password);
-        qry.bindValue(":username" ,username);
+        if(count == 1){
+            qry.prepare("UPDATE Teacher SET passWord = :password WHERE userName = :username");
+            qry.bindValue(":password", password);
+            qry.bindValue(":username", username);
 
-        if (!qry.exec()) {
-            QMessageBox::information(this, "Error", "Failed to change password");
-            qDebug() << "Query error: " << qry.lastError().text();
-
-        } else {
-            QMessageBox::information(this, "Saved", " Password changed successfully ");
-
+            if (!qry.exec()) {
+                QMessageBox::information(this, "Error", "Failed to change password");
+                qDebug() << "Query error: " << qry.lastError().text();
+            } else {
+                QMessageBox::information(this, "Saved", "Password changed successfully");
+            }
         }
-
+        else{
+            QMessageBox::information(this,"Error","Incorrect old password");
+        }
     }
-    else{
-        QMessageBox::information(this,"Error","Password should contain a number");
-        }
+    else
+    {
+        qDebug() << "Query error: " << qry.lastError().text();
+    }
 
+    connectionClose();
 }
-
 
 void SecDialog::on_backButton_clicked()
 {
     ui->stackedWidget->setCurrentWidget(ui->mainPage);
-
 }
-

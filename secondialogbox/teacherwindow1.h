@@ -55,7 +55,7 @@ private slots:
 
     void changePassword();
 
-    bool containsNumber(QString &str);
+    bool containsNumber(const QString &str);
 
     void on_backButton_clicked();
 

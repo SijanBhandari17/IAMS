@@ -49,15 +49,11 @@ private slots:
 
     void on_backButton_clicked();
 
-    bool containsNumber(QString &str);
-
-
-
-
+    bool containsNumber(const QString &str);
 
     void on_changepasswordButton_clicked();
 
-    void on_changeButton_clicked();
+    void changePassword();
 
 private:
     Ui::studentwindow1 *ui;

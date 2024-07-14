@@ -47,9 +47,20 @@ void studentdashboard::on_homeButton_clicked()
 }
 
 void studentdashboard::on_assignmentButton_clicked()
-{
-    ui->stackedWidget->setCurrentWidget(ui->Assignment);
-}
+    {
+        ui->stackedWidget->setCurrentWidget(ui->Assignment);
+        QSqlQuery qry(mydb);
+        if(qry.exec("SELECT * FROM Assignment")){
+            QSqlQueryModel *modal = new QSqlQueryModel();
+            modal -> setQuery(qry);
+            ui->AssinmentTableView->setModel(modal);
+            qDebug() << "Row count:" << modal ->rowCount();
+        }else{
+            qDebug() << "Query execution error:" << qry.lastError().text();
+            QMessageBox::critical(this,"Query Error","Failed to execute query");
+        }
+    }
+
 
 void studentdashboard::on_internalButton_clicked()
 {
@@ -58,7 +69,7 @@ void studentdashboard::on_internalButton_clicked()
     if (qry.exec("SELECT * FROM Exam")) {
         QSqlQueryModel *modal = new QSqlQueryModel();
         modal->setQuery(qry);
-        ui->tableView->setModel(modal);
+        ui->internalTableView->setModel(modal);
         qDebug() << "Row count:" << modal->rowCount();
     } else {
         qDebug() << "Query execution error:" << qry.lastError().text();
